@@ -1,0 +1,38 @@
+<nav class="main-nav">
+  <ul class="flex">
+    {% for link in linklists.main-menu.links %}
+        <li class="nested-nav-2 px-2 group relative">
+          <a href= "{{ link.url }}">{{ link.title }}</a>
+            <ul class="invisible group-hover:visible absolute w-[150px] text-black">
+            {% for nestedLink in link.links %}
+               <li class="nested-nav-2 px-2 group/nestedLink">
+                 <span class="font-bold underline">{{ nestedLink.title }}</span>
+                 <ul class="bg-white pl-[5px] js_sorted_wrap invisible group-hover/nestedLink:visible text-black left-[100px] top-0 absolute w-[150px]">
+                  {% for nestedLink2 in nestedLink.links %}
+                     <li class="nested-nav-3 js_sorted px-2">{{ nestedLink2.title | link_to: nestedLink2.url }}</li>
+                  {% endfor %}
+  
+                  <li class="nested-nav-3 js_last_item">
+                    <a class="italic" href="{{ nestedLink.url }}">Shop all</a>
+                  </li>
+                </ul>
+               </li>
+            {% endfor %}
+          </ul>
+        </li>
+    {% endfor %}
+  </ul>
+</nav>
+
+<script>
+   (function () {
+      const list = document.getElementsByClassName('js_sorted_wrap')[0];
+      const lastItem = document.getElementsByClassName('js_last_item')[0];
+    
+      Array.from(list.getElementsByTagName("LI"))
+        .sort((a, b) => a.textContent.localeCompare(b.textContent))
+        .forEach(li => list.appendChild(li));
+    
+      list.appendChild(lastItem);
+   })();
+</script>
